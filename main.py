@@ -13,6 +13,7 @@ user_controller = UserController(config_database)
 ################################################################################
 def main():
     while True:
+        print();print()
         print("1 - Usuário")
         print("2 - Produto")
         print("3 - Compra")
@@ -49,6 +50,8 @@ def handle_user():
     match opcao:
         case 1:
             user_controller.create_user()
+        case 2:
+            user_controller.get_user()
         case _:
             print("Opção inválida")
 

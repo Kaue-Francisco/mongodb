@@ -1,3 +1,6 @@
+import datetime
+import bcrypt
+
 class UserModel:
     def __init__(self, config_database):
         self.config_database = config_database
@@ -5,11 +8,17 @@ class UserModel:
         self.table_user = self.db.users
 
     ################################################################################
-    def get_user(self, user_id):
-        return self.db.get_user(user_id)
+    def get_user(self, email: str):
+        return self.table_user.find_one({'email': email})
 
     ################################################################################
-    def create_user(self, name, email, password, seller, registration_data):
+    def create_user(self, 
+                    name: str,                      # User name
+                    email: str,                     # User email
+                    password: bcrypt,               # User password (hashed)
+                    seller: bool,                   # User is a seller
+                    registration_data: datetime):   # User registration date
+        
         user = {
             'name': name,
             'email': email,
@@ -21,5 +30,5 @@ class UserModel:
         self.table_user.insert_one(user)
         
     ################################################################################
-    def email_exists(self, email):
+    def email_exists(self, email: str):
         return self.table_user.find_one({'email': email}) is not None
