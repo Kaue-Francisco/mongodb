@@ -19,3 +19,7 @@ class UserModel:
         }
         
         self.table_user.insert_one(user)
+        
+    ################################################################################
+    def email_exists(self, email):
+        return self.table_user.find_one({'email': email}) is not None

@@ -12,22 +12,27 @@ user_controller = UserController(config_database)
 
 ################################################################################
 def main():
-    print("1 - Usuário")
-    print("2 - Produto")
-    print("3 - Compra")
+    while True:
+        print("1 - Usuário")
+        print("2 - Produto")
+        print("3 - Compra")
+        print("4 - Sair")
 
-    print("O que deseja fazer?")
-    opcao = int(input())
-    
-    match opcao:
-        case 1:
-            handle_user()
-        case 2:
-            handle_product()
-        case 3:
-            handle_shopping()
-        case _:
-            print("Opção inválida")
+        print("O que deseja fazer?")
+        opcao = int(input())
+        
+        match opcao:
+            case 1:
+                handle_user()
+            case 2:
+                handle_product()
+            case 3:
+                handle_shopping()
+            case 4:
+                print("Saindo...")
+                break
+            case _:
+                print("Opção inválida")
     
 ################################################################################
 def handle_user():
@@ -41,13 +46,11 @@ def handle_user():
     print("O que deseja fazer?")
     opcao = int(input())
     
-    data = {
-        'name': 'Kaue',
-        'email': 'kaueteste@gmail.com',
-        'password': '123456'
-    }
-    
-    user_controller.create_user(data)
+    match opcao:
+        case 1:
+            user_controller.create_user()
+        case _:
+            print("Opção inválida")
 
 ################################################################################
 def handle_product():
