@@ -12,6 +12,10 @@ class UserModel:
         return self.table_user.find_one({'email': email})
 
     ################################################################################
+    def get_all_users(self):
+        return self.table_user.find()
+    
+    ################################################################################
     def create_user(self, 
                     name: str,                      # User name
                     email: str,                     # User email
@@ -28,7 +32,11 @@ class UserModel:
         }
         
         self.table_user.insert_one(user)
-        
+    
+    ################################################################################
+    def update_user(self, user_id: str, field: str, value):
+        self.table_user.update_one({'_id': user_id}, {'$set': {field: value}})
+    
     ################################################################################
     def email_exists(self, email: str):
         return self.table_user.find_one({'email': email}) is not None

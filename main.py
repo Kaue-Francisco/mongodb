@@ -52,6 +52,8 @@ def handle_user():
             user_controller.create_user()
         case 2:
             user_controller.get_user()
+        case 3:
+            user_controller.update_user()
         case _:
             print("Opção inválida")
 
