@@ -2,6 +2,7 @@
 # Imports
 
 from controller.user_controller import UserController
+from controller.product_controller import ProductController
 from config.config_database import ConfigDatabase
 import os
 import time
@@ -11,6 +12,7 @@ import time
 
 config_database = ConfigDatabase()
 user_controller = UserController(config_database)
+product_controller = ProductController(config_database)
 
 ################################################################################
 def main():
@@ -68,11 +70,32 @@ def handle_user():
 
 ################################################################################
 def handle_product():
-    data = {
-        'name': 'Produto 1',
-        'price': 10.0,
-        'quantity': 10
-    }
+    clear_screen()
+    print("########## Produto ##########");print()
+    
+    print("1 - Cadastrar")
+    print("2 - Consultar")
+    print("3 - Atualizar")
+    print("4 - Listar")
+    print("5 - Deletar")
+    
+    print()
+    print("O que deseja fazer?")
+    opcao = int(input())
+    
+    match opcao:
+        case 1:
+            product_controller.create_product()
+        case 2:
+            product_controller.get_product()
+        case 3:
+            product_controller.update_product()
+        case 4:
+            product_controller.get_all_products()
+        case 5:
+            product_controller.delete_product()
+        case _:
+            print("Opção inválida")
 
 ################################################################################
 def handle_shopping():

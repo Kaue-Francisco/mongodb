@@ -112,5 +112,19 @@ class UserController:
         return all_users
     
     ################################################################################
+    def get_all_sellers(self):
+        all_sellers = []
+        sellers = self.user_model.get_all_sellers()
+        print()
+        
+        for i, seller in enumerate(sellers):
+            print(f"{i+1} - {seller['name']}")
+            all_sellers.append(seller)
+        
+        print()
+        
+        return all_sellers
+    
+    ################################################################################
     def email_exists(self, email):
         return self.user_model.email_exists(email)
