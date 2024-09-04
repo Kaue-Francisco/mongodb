@@ -7,6 +7,7 @@ from model.user_model import UserModel
 
 ################################################################################
 class UserController:
+    
     def __init__(self, db):
         self.config_database = db
         self.user_model = UserModel(self.config_database)
@@ -16,7 +17,6 @@ class UserController:
 
     ################################################################################
     def create_user(self):
-        """ Create a new user """
         
         # Get the user data
         name = str(input("Digite o nome: "))
@@ -33,6 +33,7 @@ class UserController:
 
     ################################################################################
     def update_user(self):
+        
         print("Todos os usuários cadastrados:")
         all_users = self.get_all_users()
         print("Digite o número do usuário que deseja atualizar:")
@@ -44,6 +45,7 @@ class UserController:
         print("2 - Email")
         print("3 - Senha")
         print("4 - Vendedor")
+        print("5 - Sair")
         
         print("Digite o número do campo que deseja atualizar:")
         option = int(input())
@@ -61,15 +63,27 @@ class UserController:
             case 4:
                 new_seller = str(input("Você é um vendedor? (S/N) ")).upper() == 'S'
                 self.user_model.update_user(user_selected['_id'], 'seller', new_seller)
+            case 5:
+                print("Saindo...")
+                return
             case _:
                 print("Opção inválida")
         
     ################################################################################
-    def delete_user(self, user_id):
-        return self.user_model.delete_user(user_id)
+    def delete_user(self):
+        
+        print("Todos os usuários cadastrados:")
+        all_users = self.get_all_users()
+        print("Digite o número do usuário que deseja deletar:")
+        
+        user_index = int(input())
+        user_selected = all_users[user_index-1]
+        
+        self.user_model.delete_user(user_selected['_id'])
     
     ################################################################################
     def get_user(self):
+        
         email = str(input("Digite o email do usuario: "))
         while not self.email_exists(email):
             print("Email não cadastrado.")
@@ -84,6 +98,7 @@ class UserController:
     
     ################################################################################
     def get_all_users(self):
+        
         all_users = []
         users = self.user_model.get_all_users()
         print()
@@ -91,6 +106,8 @@ class UserController:
         for i, user in enumerate(users):
             print(f"{i+1} - {user['name']}")
             all_users.append(user)
+        
+        print()
             
         return all_users
     

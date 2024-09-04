@@ -46,7 +46,8 @@ def handle_user():
     print("1 - Cadastrar")
     print("2 - Consultar")
     print("3 - Atualizar")
-    print("4 - Deletar")
+    print("4 - Listar")
+    print("5 - Deletar")
         
     print()
     print("O que deseja fazer?")
@@ -58,6 +59,10 @@ def handle_user():
             user_controller.get_user()
         case 3:
             user_controller.update_user()
+        case 4:
+            user_controller.get_all_users()
+        case 5:
+            user_controller.delete_user()
         case _:
             print("Opção inválida")
 

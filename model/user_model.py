@@ -2,6 +2,7 @@ import datetime
 import bcrypt
 
 class UserModel:
+    
     def __init__(self, config_database):
         self.config_database = config_database
         self.db = self.config_database.get_db()
@@ -36,7 +37,11 @@ class UserModel:
     ################################################################################
     def update_user(self, user_id: str, field: str, value):
         self.table_user.update_one({'_id': user_id}, {'$set': {field: value}})
-    
+        
+    ################################################################################
+    def delete_user(self, user_id: str):
+        self.table_user.delete_one({'_id': user_id})
+
     ################################################################################
     def email_exists(self, email: str):
         return self.table_user.find_one({'email': email}) is not None
