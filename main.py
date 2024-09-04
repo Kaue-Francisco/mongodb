@@ -50,6 +50,7 @@ def handle_user():
     print("3 - Atualizar")
     print("4 - Listar")
     print("5 - Deletar")
+    print("6 - Sair")
         
     print()
     print("O que deseja fazer?")
@@ -65,6 +66,9 @@ def handle_user():
             user_controller.get_all_users()
         case 5:
             user_controller.delete_user()
+        case 6:
+            clear_screen()
+            return
         case _:
             print("Opção inválida")
 
@@ -78,6 +82,7 @@ def handle_product():
     print("3 - Atualizar")
     print("4 - Listar")
     print("5 - Deletar")
+    print("6 - Sair")
     
     print()
     print("O que deseja fazer?")
@@ -94,6 +99,9 @@ def handle_product():
             product_controller.get_all_products()
         case 5:
             product_controller.delete_product()
+        case 6:
+            clear_screen()
+            return
         case _:
             print("Opção inválida")
 
