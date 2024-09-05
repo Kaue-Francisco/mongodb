@@ -40,11 +40,49 @@ class ProductController:
     
     ################################################################################
     def update_product(self):
-        pass
+        print("Todos os produtos cadastrados:")
+        all_products = self.get_all_products()
+        print("Digite o número do produto que deseja atualizar:")
+        product_index = int(input())
+        
+        product_selected = all_products[product_index-1]
+        
+        print("1 - Nome")
+        print("2 - Preço")
+        print("3 - Descrição")
+        print("4 - Sair")
+        
+        print("Digite o número do campo que deseja atualizar:")
+        option = int(input())
+        
+        match option:
+            case 1:
+                new_name = str(input("Digite o novo nome: "))
+                self.product_model.update_product(product_selected['_id'], 'name', new_name)
+            case 2:
+                new_price = float(input("Digite o novo preço: ").replace(',', '.'))
+                self.product_model.update_product(product_selected['_id'], 'price', new_price)
+            case 3:
+                new_description = str(input("Digite a nova descrição: "))
+                self.product_model.update_product(product_selected['_id'], 'description', new_description)
+            case 4:
+                print("Saindo...")
+                return
     
     ################################################################################
     def get_all_products(self):
-        pass
+        all_products = []
+        sellers = self.product_model.get_all_products()
+        print()
+        
+        for i, product in enumerate(self.product_model.get_all_products()):
+            seller = product['seller']
+            print(f"{i+1} - {product['name']} - R$ {product['price']} - Vendedor: {seller['name']}")
+            all_products.append(product)
+        
+        print()
+        
+        return all_products
     
     ################################################################################
     def delete_product(self):

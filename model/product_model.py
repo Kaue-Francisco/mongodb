@@ -20,3 +20,12 @@ class ProductModel:
         }
         
         self.table_product.insert_one(product)
+    
+    ################################################################################
+    def update_product(self, product_id, field, value):
+        self.table_product.update_one({'_id': product_id}, {'$set': {field: value}})
+        
+    ################################################################################
+    def get_all_products(self):
+        products = self.table_product.find()
+        return list(products)
