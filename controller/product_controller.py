@@ -36,7 +36,21 @@ class ProductController:
 
     ################################################################################
     def get_product(self):
-        pass
+        print("Digite o nome do produto que você deseja buscar: ")
+        name_product = str(input())
+        products = self.product_model.get_product(name_product)
+        
+        if len(products) == 0:
+            print()
+            print("Não foi encontrado esse produto!")
+            print()
+            return
+        
+        print();print("Produtos encontrados")
+        for index, product in enumerate(products):
+            print(f"{index + 1} - {product['name']} - Price: {product['price']} - Vendedor: {product['seller']['name']}")
+        
+        print()
     
     ################################################################################
     def update_product(self):

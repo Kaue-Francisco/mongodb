@@ -33,3 +33,7 @@ class ProductModel:
     def get_all_products(self):
         products = self.table_product.find()
         return list(products)
+    
+    ################################################################################
+    def get_product(self, name_product):
+        return list(self.table_product.find({"name": name_product}))
