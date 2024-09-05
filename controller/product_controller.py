@@ -86,4 +86,11 @@ class ProductController:
     
     ################################################################################
     def delete_product(self):
-        pass
+        print("Todos os produtos cadastrados:")
+        all_products = self.get_all_products()
+        print("Digite o número do produto que deseja deletar:")
+        product_index = int(input())
+        
+        product_selected = all_products[product_index-1]
+        
+        self.product_model.delete_product(product_selected['_id'])

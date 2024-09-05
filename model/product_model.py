@@ -22,6 +22,10 @@ class ProductModel:
         self.table_product.insert_one(product)
     
     ################################################################################
+    def delete_product(self, product_id):
+        self.table_product.delete_one({"_id": product_id})
+    
+    ################################################################################
     def update_product(self, product_id, field, value):
         self.table_product.update_one({'_id': product_id}, {'$set': {field: value}})
         
