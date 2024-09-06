@@ -37,7 +37,7 @@ class UserController:
         print("Todos os usuários cadastrados:")
         all_users = self.get_all_users()
         print("Digite o número do usuário que deseja atualizar:")
-        user_index = int(input())
+        user_index = self.get_valid_index(all_users, "Digite o número do usuário que deseja atualizar:")
         
         user_selected = all_users[user_index-1]
         
@@ -48,7 +48,7 @@ class UserController:
         print("5 - Sair")
         
         print("Digite o número do campo que deseja atualizar:")
-        option = int(input())
+        option = self.get_invalid_index([1, 2, 3, 4, 5], "Digite o número do campo que deseja atualizar:")
         
         match option:
             case 1:
@@ -75,8 +75,7 @@ class UserController:
         print("Todos os usuários cadastrados:")
         all_users = self.get_all_users()
         print("Digite o número do usuário que deseja deletar:")
-        
-        user_index = int(input())
+        user_index = self.get_valid_index(all_users, "Digite o número do usuário que deseja deletar:")
         user_selected = all_users[user_index-1]
         
         self.user_model.delete_user(user_selected['_id'])
@@ -128,3 +127,14 @@ class UserController:
     ################################################################################
     def email_exists(self, email):
         return self.user_model.email_exists(email)
+    
+    ################################################################################
+    def get_valid_index(self, items, prompt):
+        while True:
+            print(prompt)
+            index = int(input())
+            if 1 <= index <= len(items):
+                return index - 1
+            print("Índice inválido. Tente novamente.")
+    
+    # be-improve: Adicionando tratamento para indice invalido,
