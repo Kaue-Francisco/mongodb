@@ -136,5 +136,3 @@ class UserController:
             if 1 <= index <= len(items):
                 return index - 1
             print("Índice inválido. Tente novamente.")
-    
-    # be-improve: Adicionando tratamento para indice invalido,
