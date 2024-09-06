@@ -28,7 +28,7 @@ class ProductController:
             return
         
         print("Digite o número do vendedor que deseja utilizar:")
-        seller_index = int(input())
+        seller_index = self.get_valid_index(all_sellers, "Digite o número do vendedor que deseja utilizar:")
         seller_selected = all_sellers[seller_index-1]
         seller = {"id": seller_selected['_id'], "name": seller_selected['name']}
         
@@ -67,7 +67,7 @@ class ProductController:
         print("4 - Sair")
         
         print("Digite o número do campo que deseja atualizar:")
-        option = int(input())
+        option = self.get_valid_index([1, 2, 3, 4], "Digite o número do campo que deseja atualizar:")
         
         match option:
             case 1:
@@ -103,8 +103,17 @@ class ProductController:
         print("Todos os produtos cadastrados:")
         all_products = self.get_all_products()
         print("Digite o número do produto que deseja deletar:")
-        product_index = int(input())
+        product_index = self.get_valid_index(all_products, "Digite o número do produto que deseja deletar:")
         
         product_selected = all_products[product_index-1]
         
         self.product_model.delete_product(product_selected['_id'])
+    
+    ################################################################################
+    def get_valid_index(self, items, prompt):
+        while True:
+            print(prompt)
+            index = int(input())
+            if 1 <= index <= len(items):
+                return index - 1
+            print("Índice inválido. Tente novamente.")
