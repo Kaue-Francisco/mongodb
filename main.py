@@ -3,6 +3,7 @@
 
 from controller.user_controller import UserController
 from controller.product_controller import ProductController
+from controller.shopping_controller import ShoppingController
 from config.config_database import ConfigDatabase
 import os
 import time
@@ -13,6 +14,7 @@ import time
 config_database = ConfigDatabase()
 user_controller = UserController(config_database)
 product_controller = ProductController(config_database)
+shopping_controller = ShoppingController(config_database)
 
 ################################################################################
 def main():
@@ -107,11 +109,36 @@ def handle_product():
 
 ################################################################################
 def handle_shopping():
-    data = {
-        'user_id': 1,
-        'product_id': 1,
-        'quantity': 2
-    }
+    clear_screen()
+    print("########## Compra ##########");print()
+    
+    print("1 - Comprar")
+    print("2 - Consultar")
+    print("3 - Atualizar")
+    print("4 - Listar")
+    print("5 - Deletar")
+    print("6 - Sair")
+    
+    print()
+    print("O que deseja fazer?")
+    opcao = int(input())
+    
+    match opcao:
+        case 1:
+            shopping_controller.buy_product()
+        case 2:
+            shopping_controller.get_shopping()
+        case 3:
+            shopping_controller.update_shopping()
+        case 4:
+            shopping_controller.get_all_shoppings()
+        case 5:
+            shopping_controller.delete_shopping()
+        case 6:
+            clear_screen()
+            return
+        case _:
+            print("Opção inválida")
 
 def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
