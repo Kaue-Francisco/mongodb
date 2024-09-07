@@ -1,5 +1,6 @@
 ################################################################################
 
+from pymongo import MongoClient
 from model.product_model import ProductModel
 from controller.user_controller import UserController
 
@@ -7,13 +8,13 @@ from controller.user_controller import UserController
 
 class ProductController:
     
-    def __init__(self, db):
+    def __init__(self, db: MongoClient) -> None:
         self.config_database = db
         self.product_model = ProductModel(self.config_database)
         self.user_controller = UserController(self.config_database)
     
     ################################################################################
-    def create_product(self):
+    def create_product(self) -> None:
         
         # Get the product data
         name = str(input("Digite o nome do produto: "))
@@ -35,7 +36,7 @@ class ProductController:
         self.product_model.create_product(name, price, description, seller)
 
     ################################################################################
-    def get_product(self):
+    def get_product(self) -> None:
         print("Digite o nome do produto que você deseja buscar: ")
         name_product = str(input())
         products = self.product_model.get_product(name_product)
@@ -53,7 +54,7 @@ class ProductController:
         print()
     
     ################################################################################
-    def update_product(self):
+    def update_product(self) -> None:
         print("Todos os produtos cadastrados:")
         all_products = self.get_all_products()
         print("Digite o número do produto que deseja atualizar:")
@@ -84,10 +85,8 @@ class ProductController:
                 return
     
     ################################################################################
-    def get_all_products(self):
+    def get_all_products(self) -> list:
         all_products = []
-        sellers = self.product_model.get_all_products()
-        print()
         
         for i, product in enumerate(self.product_model.get_all_products()):
             seller = product['seller']
@@ -99,7 +98,7 @@ class ProductController:
         return all_products
     
     ################################################################################
-    def delete_product(self):
+    def delete_product(self) -> None:
         print("Todos os produtos cadastrados:")
         all_products = self.get_all_products()
         print("Digite o número do produto que deseja deletar:")
@@ -110,7 +109,7 @@ class ProductController:
         self.product_model.delete_product(product_selected['_id'])
     
     ################################################################################
-    def get_valid_index(self, items, prompt):
+    def get_valid_index(self, items: dict, prompt: str) -> int:
         while True:
             print(prompt)
             index = int(input())

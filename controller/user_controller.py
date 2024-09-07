@@ -16,7 +16,7 @@ class UserController:
         self.salt = bcrypt.gensalt()
 
     ################################################################################
-    def create_user(self):
+    def create_user(self) -> None:
         
         # Get the user data
         name = str(input("Digite o nome: "))
@@ -32,7 +32,7 @@ class UserController:
         self.user_model.create_user(name, email, password, seller, registration_data)
 
     ################################################################################
-    def update_user(self):
+    def update_user(self) -> None:
         
         print("Todos os usuários cadastrados:")
         all_users = self.get_all_users()
@@ -70,7 +70,7 @@ class UserController:
                 print("Opção inválida")
         
     ################################################################################
-    def delete_user(self):
+    def delete_user(self) -> None:
         
         print("Todos os usuários cadastrados:")
         all_users = self.get_all_users()
@@ -81,7 +81,7 @@ class UserController:
         self.user_model.delete_user(user_selected['_id'])
     
     ################################################################################
-    def get_user(self):
+    def get_user(self) -> dict:
         
         email = str(input("Digite o email do usuario: "))
         while not self.email_exists(email):
@@ -96,7 +96,7 @@ class UserController:
         print(self.user_model.get_user(email))
     
     ################################################################################
-    def get_all_users(self):
+    def get_all_users(self) -> list:
         
         all_users = []
         users = self.user_model.get_all_users()
@@ -111,7 +111,7 @@ class UserController:
         return all_users
     
     ################################################################################
-    def get_all_sellers(self):
+    def get_all_sellers(self) -> list:
         all_sellers = []
         sellers = self.user_model.get_all_sellers()
         print()
@@ -125,11 +125,11 @@ class UserController:
         return all_sellers
     
     ################################################################################
-    def email_exists(self, email):
+    def email_exists(self, email: str) -> bool:
         return self.user_model.email_exists(email)
     
     ################################################################################
-    def get_valid_index(self, items, prompt):
+    def get_valid_index(self, items: dict, prompt: str) -> int:
         while True:
             print(prompt)
             index = int(input())

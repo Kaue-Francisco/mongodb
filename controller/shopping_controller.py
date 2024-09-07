@@ -18,7 +18,7 @@ class ShoppingController:
     
     ################################################################################
     
-    def buy_product(self):
+    def buy_product(self) -> None:
         print("Qual produto deseja comprar?")
         all_products = self.product_controller.get_all_products()
         print("Digite o index do produto que deseja comprar:")
@@ -55,7 +55,7 @@ class ShoppingController:
                                         product)       # Product
         
     ################################################################################
-    def get_shopping(self):
+    def get_shopping(self) -> None:
         print("Compra de qual usuário deseja consultar?")
         all_users = self.user_controller.get_all_users()
         user_index = self.get_valid_index(all_users, "Digite o index do usuário que deseja consultar:")
@@ -68,7 +68,7 @@ class ShoppingController:
             return
         
     ################################################################################
-    def get_shopping_for_user(self, user_id):
+    def get_shopping_for_user(self, user_id: str) -> None:
         shoppings = self.shopping_model.get_all_shopping_for_user(user_id)
         all_shopping_for_user = []
         
@@ -86,7 +86,7 @@ class ShoppingController:
         return all_shopping_for_user
     
     ################################################################################
-    def get_all_shoppings(self):
+    def get_all_shoppings(self) -> None:
         shoppings = self.shopping_model.get_all_shoppings()
         
         if len(shoppings) == 0:
@@ -102,7 +102,7 @@ class ShoppingController:
             print("   ---------------------------------")
     
     ################################################################################
-    def delete_shopping(self):
+    def delete_shopping(self) -> None:
         print("Compra de qual usuario você deseja deletar?")
         all_users = self.user_controller.get_all_users()
         user_index = self.get_valid_index(all_users, "Digite o index do usuário que deseja consultar:")
@@ -120,7 +120,7 @@ class ShoppingController:
         self.shopping_model.delete_shopping(shopping_selected['_id'])
         
     ################################################################################
-    def update_shopping(self):
+    def update_shopping(self) -> None:
         print("Compra de qual usuário deseja atualizar?")
         all_users = self.user_controller.get_all_users()
         user_index = self.get_valid_index(all_users, "Digite o index do usuário que deseja consultar:")
@@ -154,7 +154,7 @@ class ShoppingController:
                 return
     
     ################################################################################
-    def get_valid_index(self, items, prompt):
+    def get_valid_index(self, items: dict, prompt: str) -> int:
         while True:
             print(prompt)
             index = int(input())
