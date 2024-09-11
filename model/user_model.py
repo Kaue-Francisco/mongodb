@@ -38,7 +38,8 @@ class UserModel:
             'email': email,
             'password': password,
             'seller': seller,
-            'registration_data': registration_data
+            'registration_data': registration_data,
+            'favorite_products': []
         }
         
         self.table_user.insert_one(user)
@@ -54,3 +55,29 @@ class UserModel:
     ################################################################################
     def email_exists(self, email: str) -> bool:
         return self.table_user.find_one({'email': email}) is not None
+    
+    ################################################################################
+    def favorite_product(self, id_user: str, id_product: str, name_product: str) -> None:
+        self.table_user.update_one(
+            {'_id': id_user},
+            {'$addToSet': {'favorite_products': {'id_product': id_product, 'name_product': name_product}}}
+        )
+    
+    ################################################################################
+    def get_all_favorites(self, user_id: str) -> list:
+        # Encontrar o usuário pelo ID
+        user = self.table_user.find_one({'_id': user_id}, {'favorite_products': 1, '_id': 0})
+        
+        # Se o usuário for encontrado, retornar a lista de produtos favoritos
+        if user:
+            return user.get('favorite_products', [])
+        
+        # Caso contrário, retornar uma lista vazia
+        return []
+    
+    ################################################################################
+    def remove_favorite(self, user_id: str, product_id: str):
+        self.table_user.update_one(
+            {'_id': user_id},
+            {'$pull': {'favorite_products': {'id_product': product_id}}}
+        )

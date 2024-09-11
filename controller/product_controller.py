@@ -28,9 +28,8 @@ class ProductController:
             print("Não há vendedores cadastrados.")
             return
         
-        print("Digite o número do vendedor que deseja utilizar:")
         seller_index = self.get_valid_index(all_sellers, "Digite o número do vendedor que deseja utilizar:")
-        seller_selected = all_sellers[seller_index-1]
+        seller_selected = all_sellers[seller_index]
         seller = {"id": seller_selected['_id'], "name": seller_selected['name']}
         
         self.product_model.create_product(name, price, description, seller)
@@ -67,8 +66,7 @@ class ProductController:
         print("3 - Descrição")
         print("4 - Sair")
         
-        print("Digite o número do campo que deseja atualizar:")
-        option = self.get_valid_index([1, 2, 3, 4], "Digite o número do campo que deseja atualizar:")
+        option = self.get_valid_index([1, 2, 3, 4], "Digite o número do campo que deseja atualizar:", True)
         
         match option:
             case 1:
@@ -101,18 +99,25 @@ class ProductController:
     def delete_product(self) -> None:
         print("Todos os produtos cadastrados:")
         all_products = self.get_all_products()
-        print("Digite o número do produto que deseja deletar:")
         product_index = self.get_valid_index(all_products, "Digite o número do produto que deseja deletar:")
         
-        product_selected = all_products[product_index-1]
+        product_selected = all_products[product_index]
         
         self.product_model.delete_product(product_selected['_id'])
     
     ################################################################################
-    def get_valid_index(self, items: dict, prompt: str) -> int:
+    def get_valid_index(self, items: dict, prompt: str, update=False) -> int:
         while True:
             print(prompt)
             index = int(input())
+            
+            if update == True:
+                if 1 <= index <= len(items):
+                    return index
+                print("Índice inválido. Tente novamente")
+                continue    
+            
             if 1 <= index <= len(items):
                 return index - 1
+            
             print("Índice inválido. Tente novamente.")

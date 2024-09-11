@@ -36,19 +36,18 @@ class UserController:
         
         print("Todos os usuários cadastrados:")
         all_users = self.get_all_users()
-        print("Digite o número do usuário que deseja atualizar:")
         user_index = self.get_valid_index(all_users, "Digite o número do usuário que deseja atualizar:")
         
-        user_selected = all_users[user_index-1]
+        user_selected = all_users[user_index]
         
         print("1 - Nome")
         print("2 - Email")
         print("3 - Senha")
         print("4 - Vendedor")
-        print("5 - Sair")
+        print("5 - Remover Favoritos")
+        print("6 - Sair")
         
-        print("Digite o número do campo que deseja atualizar:")
-        option = self.get_invalid_index([1, 2, 3, 4, 5], "Digite o número do campo que deseja atualizar:")
+        option = self.get_valid_index([1, 2, 3, 4, 5, 6], "Digite o número do campo que deseja atualizar:", True)
         
         match option:
             case 1:
@@ -64,6 +63,15 @@ class UserController:
                 new_seller = str(input("Você é um vendedor? (S/N) ")).upper() == 'S'
                 self.user_model.update_user(user_selected['_id'], 'seller', new_seller)
             case 5:
+                favorites = self.get_all_favorites(user_selected['_id'])
+                
+                if favorites is None or len(favorites) == 0:
+                    return
+                
+                favorite_index = self.get_valid_index(favorites, "Digite o número do favorito que deseja remover:")
+                favorite_selected = favorites[favorite_index]
+                self.user_model.remove_favorite(user_selected['_id'], favorite_selected['id_product'])
+            case 6:
                 print("Saindo...")
                 return
             case _:
@@ -74,9 +82,8 @@ class UserController:
         
         print("Todos os usuários cadastrados:")
         all_users = self.get_all_users()
-        print("Digite o número do usuário que deseja deletar:")
         user_index = self.get_valid_index(all_users, "Digite o número do usuário que deseja deletar:")
-        user_selected = all_users[user_index-1]
+        user_selected = all_users[user_index]
         
         self.user_model.delete_user(user_selected['_id'])
     
@@ -92,8 +99,14 @@ class UserController:
             if email.upper() == 'N':
                 print("Saindo...")
                 return
-            
-        print(self.user_model.get_user(email))
+        
+        user = self.user_model.get_user(email)
+        
+        print("Nome: ", user['name'])
+        print("Email: ", user['email'])
+        print("É vendedor? ", user['seller'])
+        print("Data de cadastro: ", user['registration_data'])
+        print()
     
     ################################################################################
     def get_all_users(self) -> list:
@@ -129,10 +142,49 @@ class UserController:
         return self.user_model.email_exists(email)
     
     ################################################################################
-    def get_valid_index(self, items: dict, prompt: str) -> int:
+    def get_valid_index(self, items: dict, prompt: str, favorite=False) -> int:
         while True:
             print(prompt)
             index = int(input())
+            if favorite == True:
+                if 1 <= index <= len(items):
+                    return index
+                print("Índice inválido. Tente novamente.")
+                continue
+                
             if 1 <= index <= len(items):
                 return index - 1
             print("Índice inválido. Tente novamente.")
+    
+    ################################################################################
+    def favorite_product(self):
+        from controller.product_controller import ProductController
+        
+        print("Selecione o usuário:")
+        all_users = self.get_all_users()
+        user_index = self.get_valid_index(all_users, "Digite o número do usuário que deseja favoritar um produto:")
+        user_selected = all_users[user_index]
+        
+        print("Selecione o produto:")
+        all_products = ProductController(self.config_database).get_all_products()
+        product_index = self.get_valid_index(all_products, "Digite o número do produto que deseja favoritar:")
+        product_selected = all_products[product_index]
+        
+        self.user_model.favorite_product(user_selected['_id'], product_selected['_id'], product_selected['name'])
+        
+    ################################################################################
+    def get_all_favorites(self, user_id: str):
+        all_favorites = []
+        favorites = self.user_model.get_all_favorites(user_id)
+        print()
+        if favorites == None or len(favorites) == 0:
+            print("O usuário não tem favoritos.")
+            return favorites
+        
+        for i, favorite in enumerate(favorites):
+            print(f"{i+1} - {favorite['name_product']}")
+            all_favorites.append(favorite)
+        
+        print()
+        
+        return all_favorites

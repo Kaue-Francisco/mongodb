@@ -52,11 +52,13 @@ def handle_user():
     print("3 - Atualizar")
     print("4 - Listar")
     print("5 - Deletar")
-    print("6 - Sair")
+    print("6 - Favoritar")
+    print("7 - Sair")
         
     print()
     print("O que deseja fazer?")
     opcao = int(input())
+    
     match opcao:
         case 1:
             user_controller.create_user()
@@ -69,6 +71,8 @@ def handle_user():
         case 5:
             user_controller.delete_user()
         case 6:
+            user_controller.favorite_product()
+        case 7:
             clear_screen()
             return
         case _:

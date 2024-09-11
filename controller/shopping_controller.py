@@ -21,7 +21,6 @@ class ShoppingController:
     def buy_product(self) -> None:
         print("Qual produto deseja comprar?")
         all_products = self.product_controller.get_all_products()
-        print("Digite o index do produto que deseja comprar:")
         product_index = self.get_valid_index(all_products, "Digite o index do produto que deseja comprar:")
         product_selected = all_products[product_index-1]
         
@@ -31,7 +30,7 @@ class ShoppingController:
         print("Qual usuário está comprando?")
         all_users = self.user_controller.get_all_users()
         user_index = self.get_valid_index(all_users, "Digite o index do usuário que deseja comprar:")
-        user_selected = all_users[user_index-1]
+        user_selected = all_users[user_index]
         
         price_total = product_selected['price'] * quantity
         
@@ -106,7 +105,7 @@ class ShoppingController:
         print("Compra de qual usuario você deseja deletar?")
         all_users = self.user_controller.get_all_users()
         user_index = self.get_valid_index(all_users, "Digite o index do usuário que deseja consultar:")
-        user_selected = all_users[user_index-1]
+        user_selected = all_users[user_index]
 
         shoppings = self.get_shopping_for_user(user_selected['_id'])
         
@@ -115,7 +114,7 @@ class ShoppingController:
             return
 
         shopping_index = self.get_valid_index(shoppings, "Digite o index da compra que deseja deletar:")
-        shopping_selected = shoppings[shopping_index-1]
+        shopping_selected = shoppings[shopping_index]
         
         self.shopping_model.delete_shopping(shopping_selected['_id'])
         
@@ -133,14 +132,14 @@ class ShoppingController:
             return
         
         shopping_index = self.get_valid_index(shoppings, "Digite o index da compra que deseja atualizar:")
-        shopping_selected = shoppings[shopping_index-1]
+        shopping_selected = shoppings[shopping_index]
         
         print("O que deseja atualizar?")
         print("1 - Quantidade")
         print("2 - Preço total")
         print("3 - Sair")
         
-        option = self.get_valid_index([1, 2, 3], "Digite o index do campo que deseja atualizar:")
+        option = self.get_valid_index([1, 2, 3], "Digite o index do campo que deseja atualizar:", True)
         
         match option:
             case 1:
@@ -154,10 +153,16 @@ class ShoppingController:
                 return
     
     ################################################################################
-    def get_valid_index(self, items: dict, prompt: str) -> int:
+    def get_valid_index(self, items: dict, prompt: str, update=False) -> int:
         while True:
             print(prompt)
             index = int(input())
+            if update == True:
+                if 1 <= index <= len(items):
+                    return index
+                print("Índice inválido. Tente novamente.")
+                continue
+            
             if 1 <= index <= len(items):
                 return index - 1
             print("Índice inválido. Tente novamente.")
