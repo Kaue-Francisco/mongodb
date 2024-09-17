@@ -58,7 +58,7 @@ class ShoppingController:
         print("Compra de qual usuário deseja consultar?")
         all_users = self.user_controller.get_all_users()
         user_index = self.get_valid_index(all_users, "Digite o index do usuário que deseja consultar:")
-        user_selected = all_users[user_index-1]
+        user_selected = all_users[user_index]
         
         shoppings = self.get_shopping_for_user(user_selected['_id'])
         
@@ -123,7 +123,7 @@ class ShoppingController:
         print("Compra de qual usuário deseja atualizar?")
         all_users = self.user_controller.get_all_users()
         user_index = self.get_valid_index(all_users, "Digite o index do usuário que deseja consultar:")
-        user_selected = all_users[user_index-1]
+        user_selected = all_users[user_index]
         
         shoppings = self.get_shopping_for_user(user_selected['_id'])
         
