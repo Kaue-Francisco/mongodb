@@ -101,10 +101,16 @@ class UserController:
                 return
         
         user = self.user_model.get_user(email)
-        
         print("Nome: ", user['name'])
         print("Email: ", user['email'])
         print("É vendedor? ", user['seller'])
+        if 'favorites_products' not in user or not user['favorite_products']:
+            print("Favoritos: Não há favoritos")
+        else:
+            print("Favoritos:")
+            for product in user['favorite_products']:
+                print(" - ", product['name_product'])
+
         print("Data de cadastro: ", user['registration_data'])
         print()
     
@@ -116,7 +122,7 @@ class UserController:
         print()
         
         for i, user in enumerate(users):
-            print(f"{i+1} - {user['name']}")
+            print(f"{i+1} - {user['name']} - {user['email']}")
             all_users.append(user)
         
         print()
