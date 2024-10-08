@@ -22,7 +22,8 @@ def main():
         print("1 - Usuário")
         print("2 - Produto")
         print("3 - Compra")
-        print("4 - Sair")
+        print("4 - Logar")
+        print("5 - Sair")
 
         print("O que deseja fazer?")
         opcao = int(input())
@@ -35,6 +36,8 @@ def main():
             case 3:
                 handle_shopping()
             case 4:
+                handle_login()
+            case 5:
                 print("Saindo...")
                 time.sleep(1.5)
                 clear_screen()
@@ -77,6 +80,13 @@ def handle_user():
             return
         case _:
             print("Opção inválida")
+
+################################################################################
+def handle_login():
+    email = input("Digite o email: ")
+    password = input("Digite a senha: ")
+    
+    pass
 
 ################################################################################
 def handle_product():
