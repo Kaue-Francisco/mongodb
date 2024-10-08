@@ -194,3 +194,30 @@ class UserController:
         print()
         
         return all_favorites
+    
+    ################################################################################
+    def check_password(self, password, hashed_password):
+        return bcrypt.checkpw(password.encode(), hashed_password)
+    
+    ################################################################################
+    def login(self):
+        while True:
+            email = input("Digite o email: ")
+            password = input("Digite a senha: ")
+            
+            user = self.user_model.get_user(email)
+            
+            is_password = self.check_password(password, user['password'])
+            
+            if is_password:
+                redis_conn = self.config_database.get_redis()
+                redis_conn.setex(f"user: {user['_id']}", 120, user['email'])
+                
+                print("Usuário logado com sucesso")
+                return
+            
+            print("Email ou senha inválidos")
+            
+            opcao = input("Deseja tentar novamente? (S/N) ").upper()
+            if opcao == 'N':
+                return

@@ -83,10 +83,7 @@ def handle_user():
 
 ################################################################################
 def handle_login():
-    email = input("Digite o email: ")
-    password = input("Digite a senha: ")
-    
-    pass
+    user_controller.login()
 
 ################################################################################
 def handle_product():
