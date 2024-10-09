@@ -86,7 +86,12 @@ class ProductController:
     def get_all_products(self) -> list:
         all_products = []
         
-        for i, product in enumerate(self.product_model.get_all_products()):
+        products = self.product_model.get_all_products()
+        
+        if len(products) == 0:
+            return all_products
+        
+        for i, product in enumerate(products):
             seller = product['seller']
             print(f"{i+1} - {product['name']} - R$ {product['price']} - Vendedor: {seller['name']}")
             all_products.append(product)

@@ -40,6 +40,11 @@ class UserController:
         
         user_selected = all_users[user_index]
         
+        if not self.check_logged(user_selected['_id']):
+            print("Você não tem permissão para atualizar este usuário. Faça login.")
+            return
+        
+        
         print("1 - Nome")
         print("2 - Email")
         print("3 - Senha")
@@ -84,6 +89,10 @@ class UserController:
         all_users = self.get_all_users()
         user_index = self.get_valid_index(all_users, "Digite o número do usuário que deseja deletar:")
         user_selected = all_users[user_index]
+        
+        if not self.check_logged(user_selected['_id']):
+            print("Você não tem permissão para deletar este usuário. Faça login.")
+            return
         
         self.user_model.delete_user(user_selected['_id'])
     
@@ -171,8 +180,17 @@ class UserController:
         user_index = self.get_valid_index(all_users, "Digite o número do usuário que deseja favoritar um produto:")
         user_selected = all_users[user_index]
         
+        if not self.check_logged(user_selected['_id']):
+            print("Você não tem permissão para favoritar produtos. Faça login.")
+            return
+        
         print("Selecione o produto:")
         all_products = ProductController(self.config_database).get_all_products()
+        
+        if len(all_products) == 0:
+            print("Não há produtos cadastrados.")
+            return
+        
         product_index = self.get_valid_index(all_products, "Digite o número do produto que deseja favoritar:")
         product_selected = all_products[product_index]
         
@@ -221,3 +239,8 @@ class UserController:
             opcao = input("Deseja tentar novamente? (S/N) ").upper()
             if opcao == 'N':
                 return
+            
+    ################################################################################
+    def check_logged(self, user_id):
+        redis_conn = self.config_database.get_redis()
+        return redis_conn.get(f"user: {user_id}") is not None
