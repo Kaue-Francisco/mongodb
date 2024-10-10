@@ -16,6 +16,46 @@ class ProductController:
     ################################################################################
     def create_product(self) -> None:
         
+        print("Aonde você deseja cadastrar o produto?")
+        print("1 - MongoDB")
+        print("2 - Redis")
+        print("3 - Sair")
+        
+        opcao = self.get_valid_index([1, 2, 3], "Digite o número da opção desejada:", True)
+        
+        match opcao:
+            case 1:
+                self.create_product_mongo()
+            case 2:
+                self.create_product_redis()
+            case 3:
+                print("Saindo...")
+            case _:
+                print("Opção inválida.")
+
+    ################################################################################
+    def create_product_redis(self) -> None:
+        # Get the product data
+        name = str(input("Digite o nome do produto: "))
+        price = float(input("Digite o preço do produto: ").replace(',', '.'))
+        description = str(input("Digite a descrição do produto: "))
+        
+        # Select the seller
+        all_sellers = self.user_controller.get_all_sellers()
+        
+        if len(all_sellers) == 0:
+            print("Não há vendedores cadastrados.")
+            return
+        
+        seller_index = self.get_valid_index(all_sellers, "Digite o número do vendedor que deseja utilizar:")
+        seller_selected = all_sellers[seller_index]
+        seller_id = seller_selected['_id']
+        seller_name =  seller_selected['name']
+        
+        self.product_model.create_product_redis(name, price, description, seller_id, seller_name)
+
+    ################################################################################
+    def create_product_mongo(self) -> None:
         # Get the product data
         name = str(input("Digite o nome do produto: "))
         price = float(input("Digite o preço do produto: ").replace(',', '.'))
@@ -126,3 +166,21 @@ class ProductController:
                 return index - 1
             
             print("Índice inválido. Tente novamente.")
+    
+    ################################################################################ 
+    def vincular(self) -> None:
+        products = self.product_model.get_all_products_redis()
+
+        if len(products) == 0:
+            print("Não há produtos cadastrados no Redis.")
+            return
+        
+        for product in products:
+            self.product_model.create_product(
+                product['name'], 
+                product['price'], 
+                product['description'], 
+                product['seller']
+            )
+            
+        print("Todos os produtos do Redis foram adicionados ao MongoDB.")

@@ -95,7 +95,8 @@ def handle_product():
     print("3 - Atualizar")
     print("4 - Listar")
     print("5 - Deletar")
-    print("6 - Sair")
+    print("6 - Vincular")
+    print("7 - Sair")
     
     print()
     print("O que deseja fazer?")
@@ -113,6 +114,8 @@ def handle_product():
         case 5:
             product_controller.delete_product()
         case 6:
+            product_controller.vincular()
+        case 7:
             clear_screen()
             return
         case _:
