@@ -56,7 +56,8 @@ def handle_user():
     print("4 - Listar")
     print("5 - Deletar")
     print("6 - Favoritar")
-    print("7 - Sair")
+    print("7 - Vincular favorito")
+    print("8 - Sair")
         
     print()
     print("O que deseja fazer?")
@@ -76,6 +77,8 @@ def handle_user():
         case 6:
             user_controller.favorite_product()
         case 7:
+            user_controller.vincular_favorito()
+        case 8:
             clear_screen()
             return
         case _:

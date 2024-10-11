@@ -194,7 +194,18 @@ class UserController:
         product_index = self.get_valid_index(all_products, "Digite o número do produto que deseja favoritar:")
         product_selected = all_products[product_index]
         
-        self.user_model.favorite_product(user_selected['_id'], product_selected['_id'], product_selected['name'])
+        print("Aonde você deseja favoritar o produto?")
+        print("1 - MongoDB")
+        print("2 - Redis")
+        print("3 - Sair")
+        
+        opcao = self.get_valid_index([1, 2, 3], "Digite o número da opção desejada:", True)
+        
+        match opcao:
+            case 1:
+                self.user_model.favorite_product(user_selected['_id'], product_selected['_id'], product_selected['name'])
+            case 2:
+                self.user_model.favorite_product_redis(user_selected['_id'], product_selected['_id'], product_selected['name'])
         
     ################################################################################
     def get_all_favorites(self, user_id: str):
@@ -229,7 +240,7 @@ class UserController:
             
             if is_password:
                 redis_conn = self.config_database.get_redis()
-                redis_conn.setex(f"user: {user['_id']}", 120, user['email'])
+                redis_conn.setex(f"user: {user['_id']}", 240, user['email'])
                 
                 print("Usuário logado com sucesso")
                 return
@@ -244,3 +255,16 @@ class UserController:
     def check_logged(self, user_id):
         redis_conn = self.config_database.get_redis()
         return redis_conn.get(f"user: {user_id}") is not None
+    
+    def vincular_favorito(self):
+        favorities = self.user_model.get_all_favorites_redis()
+        
+        if favorities is None or len(favorities) == 0:
+            print("Não há favoritos para vincular.")
+            return
+        
+        for favorite in favorities:
+            
+            self.user_model.favorite_product(favorite['id_user'], favorite['id_product'], favorite['name_product'])
+            
+        print("Favoritos vinculados com sucesso.")

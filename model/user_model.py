@@ -4,6 +4,7 @@
 from pymongo import MongoClient
 import datetime
 import bcrypt
+from bson import ObjectId
 
 ################################################################################
 class UserModel:
@@ -62,6 +63,12 @@ class UserModel:
             {'_id': id_user},
             {'$addToSet': {'favorite_products': {'id_product': id_product, 'name_product': name_product}}}
         )
+        
+    ################################################################################
+    def favorite_product_redis(self, id_user: str, id_product: str, name_product: str) -> None:
+        redis_conn = self.config_database.get_redis()
+        
+        redis_conn.hmset(f"favorite:{id_user}:{id_product}", {'name_product': name_product})
     
     ################################################################################
     def get_all_favorites(self, user_id: str) -> list:
@@ -81,3 +88,28 @@ class UserModel:
             {'_id': user_id},
             {'$pull': {'favorite_products': {'id_product': product_id}}}
         )
+    
+    ################################################################################
+    def get_all_favorites_redis(self) -> list:
+        redis_conn = self.config_database.get_redis()
+        
+        keys = redis_conn.keys(f"favorite:*:*")
+        
+        favorites = []
+        
+        if len(keys) == 0:
+            return favorites
+        
+        for key in keys:
+            product = redis_conn.hgetall(key)
+            
+            key_str = key.decode('utf-8')
+            favorites.append({
+                'id_user': ObjectId(key_str.split(':')[1]),
+                'id_product': ObjectId(key_str.split(':')[-1]), 
+                'name_product': product[b'name_product'].decode('utf-8')
+            })
+            
+            redis_conn.delete(key)
+        
+        return favorites
