@@ -1,10 +1,5 @@
 ################################################################################
 # Definitions
-NAME_USER_DB = "root"
-PASSWD_USER_DB = "root"
-URL = f"mongodb+srv://{NAME_USER_DB}:{PASSWD_USER_DB}@fatec.eiqdu.mongodb.net/?retryWrites=true&w=majority&appName=FATEC"
-DB_NAME = "mercado_livre_redis"
-
-PASSWORD_REDIS = ""
+TOKEN = 'AstraCS:WbJFKERpBgAxHgXFYfKrtHDw:1f1cf56d29ac76ececee3dbb0e21b538793449dfa2b773e56abe3b2be954f5f5'
 
 ################################################################################
