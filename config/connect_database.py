@@ -61,7 +61,8 @@ class ConnectDatabase:
             usuario_id UUID,
             produto_id UUID,
             quantidade INT,
-            data_compra TIMESTAMP
+            total DECIMAL,
+            vendedor_id UUID,
         );
         """)
 

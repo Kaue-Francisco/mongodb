@@ -4,6 +4,7 @@
 from config.connect_database import ConnectDatabase
 from controller.user_controller import UserController
 from controller.product_controller import ProductController
+from controller.shopping_controller import ShoppingController
 import os
 
 ################################################################################
@@ -16,6 +17,7 @@ class Menu:
         self.session, self.cluster = self.config_database.get_connect()
         self.user_controller = UserController(self.session, self.cluster)
         self.product_controller = ProductController(self.session, self.cluster)
+        self.shopping_controller = ShoppingController(self.session, self.cluster)
 
     ################################################################################
     def clear_console(self):
@@ -64,6 +66,27 @@ class Menu:
             case _:
                 print("Opção inválida.")
 
+    def menu_compra(self):
+        self.clear_console()
+
+        print("---------- Compra ----------")
+        print()
+        print("1. Comprar")
+        print("2. Excluir")
+        print("3. Sair")
+
+        opcao = input("Escolha uma opção: ")
+
+        match opcao:
+            case "1":
+                self.shopping_controller.do_shopping()
+            case "2":
+                self.shopping_controller.delete_shopping()
+            case "3":
+                return
+            case _:
+                print("Opção inválida.")
+
     ################################################################################
     def main(self):
 
@@ -87,7 +110,7 @@ class Menu:
                 case "2":
                     self.menu_produto()
                 case "3":
-                    print("Compra")
+                    self.menu_compra()
                 case "4":
                     break
                 case _:
