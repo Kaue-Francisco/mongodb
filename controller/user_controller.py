@@ -113,7 +113,7 @@ class UserController:
         print("Nome: ", user['name'])
         print("Email: ", user['email'])
         print("É vendedor? ", user['seller'])
-        if 'favorites_products' not in user or not user['favorite_products']:
+        if 'favorite_products' not in user or not user['favorite_products']:
             print("Favoritos: Não há favoritos")
         else:
             print("Favoritos:")
