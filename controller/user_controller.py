@@ -7,7 +7,7 @@ import os
 from model.user_model import UserModel
 
 ################################################################################
-class ControllerUser:
+class UserController:
     
     def __init__(self, session, cluster):
         self.session = session
@@ -86,5 +86,8 @@ class ControllerUser:
         user = {"id": usuario.id, "nome": nome, "email": email, "senha": senha, "vendedor": vendedor}
 
         self.user_model.update_user(user)
+
+    def get_all_sellers(self):
+        return self.user_model.get_all_sellers()
 
 ################################################################################

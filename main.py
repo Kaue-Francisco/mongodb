@@ -2,9 +2,8 @@
 # Imports
 
 from config.connect_database import ConnectDatabase
-from controller.user_controller import ControllerUser
-import datetime
-import bcrypt
+from controller.user_controller import UserController
+from controller.product_controller import ProductController
 import os
 
 ################################################################################
@@ -15,7 +14,8 @@ class Menu:
         self.config_database.connect_cassandra()
         self.config_database.create_tables()
         self.session, self.cluster = self.config_database.get_connect()
-        self.user_controller = ControllerUser(self.session, self.cluster)
+        self.user_controller = UserController(self.session, self.cluster)
+        self.product_controller = ProductController(self.session, self.cluster)
 
     ################################################################################
     def clear_console(self):
@@ -43,12 +43,31 @@ class Menu:
             case _:
                 print("Opção inválida.")
 
+    def menu_produto(self):
+        self.clear_console()
+
+        print("---------- Produto ----------")
+        print()
+        print("1. Cadastrar")
+        print("2. Consultar")
+        print("3. Sair")
+
+        opcao = input("Escolha uma opção: ")
+
+        match opcao:
+            case "1":
+                self.product_controller.create_product()
+            case "2":
+                self.product_controller.get_products()
+            case "3":
+                return
+            case _:
+                print("Opção inválida.")
+
     ################################################################################
     def main(self):
 
         while True:
-            self.clear_console()
-
             print('****************************')
             print("Atividade com Cassandra.")
             print('****************************')
@@ -66,7 +85,7 @@ class Menu:
                 case "1":
                     self.menu_usuario()
                 case "2":
-                    print("Produto")
+                    self.menu_produto()
                 case "3":
                     print("Compra")
                 case "4":

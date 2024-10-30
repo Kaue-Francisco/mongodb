@@ -28,4 +28,7 @@ class UserModel():
             """
         )
 
+    def get_all_sellers(self):
+        return list(self.session.execute("SELECT * FROM usuario WHERE vendedor = True ALLOW FILTERING;"))
+
 ################################################################################

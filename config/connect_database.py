@@ -49,7 +49,8 @@ class ConnectDatabase:
             id UUID PRIMARY KEY,
             nome TEXT,
             descricao TEXT,
-            preco DECIMAL
+            preco DECIMAL,
+            vendedor_id UUID
         );
         """)
 
