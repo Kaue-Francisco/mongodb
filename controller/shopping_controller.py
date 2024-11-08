@@ -24,6 +24,10 @@ class ShoppingController:
 
         opcao = int(input("Digite o número do produto que deseja comprar: "))
 
+        if opcao < 1 or opcao > len(all_products):
+            print("Opção inválida")
+            return
+
         product = all_products[opcao-1]
 
         all_users = self.user_model.get_all_users()
@@ -36,6 +40,10 @@ class ShoppingController:
             print(f"{index+1}. {user.nome} - {user.email}")
 
         opcao = int(input("Digite o número do usuário que deseja comprar: "))
+
+        if opcao < 1 or opcao > len(all_users):
+            print("Opção inválida")
+            return
 
         user = all_users[opcao-1]
 
