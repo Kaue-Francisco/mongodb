@@ -1,152 +1,102 @@
 ################################################################################
 # Imports
 
-from controller.user_controller import UserController
-from controller.product_controller import ProductController
-from controller.shopping_controller import ShoppingController
-from config.config_database import ConfigDatabase
-import os
-import time
+from config.connect_database import ConnectDatabase
+from controller.usuario_controller import UsuarioController
+# from controller.produto_controller import ProdutoController
+# from controller.compra_controller import CompraController
 
 ################################################################################
-# Defined variables
 
-config_database = ConfigDatabase()
-user_controller = UserController(config_database)
-product_controller = ProductController(config_database)
-shopping_controller = ShoppingController(config_database)
+class Menu:
+    def __init__(self):
+        self.database_config = ConnectDatabase()
+        self.conn = self.database_config.connect_neo4j()
+        self.usuario_controller = UsuarioController(self.conn)
 
-################################################################################
-def main():
-    while True:
-        print("1 - Usuário")
-        print("2 - Produto")
-        print("3 - Compra")
-        print("4 - Sair")
+    def usuario_menu(self):
+        while True:
+            print("1 - Cadastrar usuário")
+            print("2 - Consultar usuário")
+            print("3 - Sair")
 
-        print("O que deseja fazer?")
-        opcao = int(input())
-        
-        match opcao:
-            case 1:
-                handle_user()
-            case 2:
-                handle_product()
-            case 3:
-                handle_shopping()
-            case 4:
-                print("Saindo...")
-                time.sleep(1.5)
-                clear_screen()
-                break
-            case _:
+            opcao = int(input("Digite a opção desejada: "))
+
+            if opcao < 1 or opcao > 3:
                 print("Opção inválida")
-    
-################################################################################
-def handle_user():
-    clear_screen()
-    print("########## Usuário ##########");print()
-    
-    print("1 - Cadastrar")
-    print("2 - Consultar")
-    print("3 - Atualizar")
-    print("4 - Listar")
-    print("5 - Deletar")
-    print("6 - Favoritar")
-    print("7 - Sair")
-        
-    print()
-    print("O que deseja fazer?")
-    opcao = int(input())
-    
-    match opcao:
-        case 1:
-            user_controller.create_user()
-        case 2:
-            user_controller.get_user()
-        case 3:
-            user_controller.update_user()
-        case 4:
-            user_controller.get_all_users()
-        case 5:
-            user_controller.delete_user()
-        case 6:
-            user_controller.favorite_product()
-        case 7:
-            clear_screen()
-            return
-        case _:
-            print("Opção inválida")
+                return
+            
+            if opcao == 1:
+                self.usuario_controller.cadastrar_usuario()
+            elif opcao == 2:
+                self.usuario_controller.consultar_usuario()
+            elif opcao == 3:
+                return
 
-################################################################################
-def handle_product():
-    clear_screen()
-    print("########## Produto ##########");print()
-    
-    print("1 - Cadastrar")
-    print("2 - Consultar")
-    print("3 - Atualizar")
-    print("4 - Listar")
-    print("5 - Deletar")
-    print("6 - Sair")
-    
-    print()
-    print("O que deseja fazer?")
-    opcao = int(input())
-    
-    match opcao:
-        case 1:
-            product_controller.create_product()
-        case 2:
-            product_controller.get_product()
-        case 3:
-            product_controller.update_product()
-        case 4:
-            product_controller.get_all_products()
-        case 5:
-            product_controller.delete_product()
-        case 6:
-            clear_screen()
-            return
-        case _:
-            print("Opção inválida")
+    ################################################################################
+    def produto_menu(self):
+        while True:
+            print("1 - Cadastrar produto")
+            print("2 - Consultar produto")
+            print("3 - Sair")
 
-################################################################################
-def handle_shopping():
-    clear_screen()
-    print("########## Compra ##########");print()
-    
-    print("1 - Comprar")
-    print("2 - Consultar")
-    print("3 - Atualizar")
-    print("4 - Listar")
-    print("5 - Deletar")
-    print("6 - Sair")
-    
-    print()
-    print("O que deseja fazer?")
-    opcao = int(input())
-    
-    match opcao:
-        case 1:
-            shopping_controller.buy_product()
-        case 2:
-            shopping_controller.get_shopping()
-        case 3:
-            shopping_controller.update_shopping()
-        case 4:
-            shopping_controller.get_all_shoppings()
-        case 5:
-            shopping_controller.delete_shopping()
-        case 6:
-            clear_screen()
-            return
-        case _:
-            print("Opção inválida")
+            opcao = int(input("Digite a opção desejada: "))
 
-def clear_screen():
-    os.system('cls' if os.name == 'nt' else 'clear')
+            if opcao < 1 or opcao > 3:
+                print("Opção inválida")
+                return
+            
+            if opcao == 1:
+                self.cadastrar_produto()
+            elif opcao == 2:
+                self.consultar_produto()
+            elif opcao == 3:
+                return
 
-################################################################################
-if __name__ == '__main__':    
-    main()
+    ################################################################################
+    def compra_menu(self):
+        while True:
+            print("1 - Realizar compra")
+            print("2 - Consultar compra")
+            print("3 - Sair")
+
+            opcao = int(input("Digite a opção desejada: "))
+
+            if opcao < 1 or opcao > 3:
+                print("Opção inválida")
+                return
+            
+            if opcao == 1:
+                self.realizar_compra()
+            elif opcao == 2:
+                self.consultar_compra()
+            elif opcao == 3:
+                return
+
+    ################################################################################
+    def main_menu(self):
+
+        while True:
+            print("1 - Usuario")
+            print("2 - Produto")
+            print("3 - Compra")
+            print("4 - Sair")
+
+            opcao = int(input("Digite a opção desejada: "))
+
+            if opcao < 1 or opcao > 4:
+                print("Opção inválida")
+                return
+            
+            if opcao == 1:
+                self.usuario_menu()
+            elif opcao == 2:
+                self.produto_menu()
+            elif opcao == 3:
+                self.compra_menu()
+            elif opcao == 4:
+                break
+
+if __name__ == "__main__":
+    menu = Menu()
+    menu.main_menu()
