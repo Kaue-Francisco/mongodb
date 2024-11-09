@@ -30,3 +30,13 @@ class ProdutoModel:
         with self.conn.session() as session:
             result = session.run(query, element_id=produto['element_id'])
             return result.single()["u"]
+        
+    def todos_produtos(self):
+        query = """
+        MATCH (p:Produto)
+        RETURN p
+        """
+        with self.conn.session() as session:
+            result = session.run(query)
+            produtos = [{"element_id": record["p"].element_id, "nome": record["p"]["nome"], "preco": record["p"]["preco"]} for record in result]
+            return produtos

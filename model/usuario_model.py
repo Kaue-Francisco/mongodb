@@ -29,3 +29,13 @@ class UsuarioModel:
             result = session.run(query)
             vendedores = [record["u"] for record in result]
             return vendedores
+    
+    def todos_usuarios(self):
+        query = """
+        MATCH (u:Usuario)
+        RETURN u
+        """
+        with self.conn.session() as session:
+            result = session.run(query)
+            usuarios = [record["u"] for record in result]
+            return usuarios

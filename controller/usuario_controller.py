@@ -39,3 +39,17 @@ class UsuarioController:
             vendedores.append(record)
 
         return vendedores
+    
+    def todos_usuarios(self):
+        result = self.usuario_model.todos_usuarios()
+        usuarios = []
+
+        if result is None:
+            print("Nenhum usuario encontrado.")
+            return
+
+        for index, record in enumerate(result):
+            print(f"{index+1} - {record['nome']}")
+            usuarios.append(record)
+
+        return usuarios

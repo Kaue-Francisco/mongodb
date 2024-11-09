@@ -52,3 +52,17 @@ class ProdutoController:
         vendedor = self.produto_model.vendedor_produto(produto)
 
         print(f"Produto: {produto['nome']}\nPreço: R$ {produto['preco']}\nNome-Vendedor: {vendedor['nome']}\nEmail-Vendedor: {vendedor['email']}\n")
+
+    def todos_produtos(self):
+        result = self.produto_model.todos_produtos()
+        produtos = []
+
+        if result is None:
+            print("Nenhum produto encontrado.")
+            return
+
+        for index, record in enumerate(result):
+            print(f"{index+1} - {record['nome']} - R$ {record['preco']}")
+            produtos.append(record)
+
+        return produtos

@@ -4,7 +4,7 @@
 from config.connect_database import ConnectDatabase
 from controller.usuario_controller import UsuarioController
 from controller.produto_controller import ProdutoController
-# from controller.compra_controller import CompraController
+from controller.compra_controller import CompraController
 
 ################################################################################
 
@@ -14,6 +14,7 @@ class Menu:
         self.conn = self.database_config.connect_neo4j()
         self.usuario_controller = UsuarioController(self.conn)
         self.produto_controller = ProdutoController(self.conn)
+        self.compra_controller = CompraController(self.conn)
 
     def usuario_menu(self):
         while True:
@@ -68,9 +69,9 @@ class Menu:
                 return
             
             if opcao == 1:
-                self.realizar_compra()
+                self.compra_controller.realizar_compra()
             elif opcao == 2:
-                self.consultar_compra()
+                self.compra_controller.consultar_compra()
             elif opcao == 3:
                 return
 
