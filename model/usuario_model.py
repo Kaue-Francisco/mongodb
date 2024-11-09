@@ -8,7 +8,7 @@ class UsuarioModel:
         RETURN u
         """
         with self.conn.session() as session:
-            result = session.run(query, nome=nome, email=email, senha=senha)
+            result = session.run(query, nome=nome, email=email, senha=senha, vendedor=vendedor)
             result.single()
 
     def consultar_usuario(self, email):
@@ -19,3 +19,13 @@ class UsuarioModel:
         with self.conn.session() as session:
             result = session.run(query, email=email)
             return result.single()
+        
+    def todos_vendedores(self):
+        query = """
+        MATCH (u:Usuario {vendedor: true})
+        RETURN u
+        """
+        with self.conn.session() as session:
+            result = session.run(query)
+            vendedores = [record["u"] for record in result]
+            return vendedores

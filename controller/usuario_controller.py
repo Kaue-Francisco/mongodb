@@ -24,4 +24,18 @@ class UsuarioController:
             return
 
         for record in result:
-            print(f"Usuário: {record['nome']}\nEmail: {record['email']}\nSenha: {record['senha']}\n")
+            print(f"Usuário: {record['nome']}\nEmail: {record['email']}\nSenha: {record['senha']}\nVendedor: {record['vendedor']}\n")
+
+    def todos_vendedores(self):
+        result = self.usuario_model.todos_vendedores()
+        vendedores = []
+
+        if result is None:
+            print("Nenhum vendedor encontrado.")
+            return
+
+        for index, record in enumerate(result):
+            print(f"{index+1} - {record['nome']}")
+            vendedores.append(record)
+
+        return vendedores
