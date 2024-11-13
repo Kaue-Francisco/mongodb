@@ -30,9 +30,9 @@ class UsuarioController:
         result = self.usuario_model.todos_vendedores()
         vendedores = []
 
-        if result is None:
+        if result is None or len(result) == 0:
             print("Nenhum vendedor encontrado.")
-            return
+            return False
 
         for index, record in enumerate(result):
             print(f"{index+1} - {record['nome']}")

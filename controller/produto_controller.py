@@ -11,7 +11,10 @@ class ProdutoController:
 
         print("Selecione o vendedor:")
         vendedores = self.usuario_controller.todos_vendedores()
-
+        
+        if vendedores is False:
+            return
+        
         opcao = int(input("Digite o número do vendedor desejado: "))
 
         if opcao < 0 or opcao > len(vendedores):
@@ -24,20 +27,6 @@ class ProdutoController:
         preco = float(input("Digite o preço do produto: "))
 
         self.produto_model.cadastrar_produto(nome, preco, vendedor)
-    
-    def todos_produtos(self):
-        result = self.produto_model.todos_produtos()
-        produtos = []
-
-        if result is None:
-            print("Nenhum produto encontrado.")
-            return
-
-        for index, record in enumerate(result):
-            print(f"{index+1} - {record['nome']} - R$ {record['preco']}")
-            produtos.append(record)
-
-        return produtos
 
     def consultar_produto(self):
         produtos = self.todos_produtos()
